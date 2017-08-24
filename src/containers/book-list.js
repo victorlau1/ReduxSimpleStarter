@@ -1,11 +1,17 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { selectBook } from '../actions/index';
+import { bindActionCreators } from 'redux';
+
 
 class BookList extends Component {
     renderList() {
         return this.props.books.map((book) => {
             return (
-                <li key={book.title} className="list-group-item">{book.title}</li>
+                <li 
+                onClick={() => this.props.selectBook(book)} 
+                key={book.title} 
+                className="list-group-item">{book.title}</li>
             )
         })
     }
@@ -26,4 +32,13 @@ function mapStateToProps(state) {
     };
 }
 
-export default connect(mapStateToProps)(BookList);
+
+function mapDispatchToProps(dispatch) {
+    //Whenener selectbook is called, the result should be passed 
+    // to all our reducers
+    return bindActionCreators({selectBook: selectBook}, dispatch);
+}
+// Refer to React Redux Documentation match props and make them to available to containers
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(BookList);
